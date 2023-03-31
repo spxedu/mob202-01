@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -20,7 +23,8 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     EditText ed_date;
-    Button btn_save;
+    Button btn_save, btn_demo_timepicker;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 //        DemoChuyenNgayThang();
         ed_date = findViewById(R.id.ed_date);
         btn_save = findViewById(R.id.btn_save);
+        btn_demo_timepicker = findViewById(R.id.btn_demo_time_picker);
 
         ed_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +63,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        btn_demo_timepicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog();
+            }
+        });
+
+
     }
+
+
+
+    void showTimePickerDialog(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(  System.currentTimeMillis() );
+
+        // tạo Dialog
+//        TimePickerDialog(Context context, TimePickerDialog.OnTimeSetListener listener, int hourOfDay, int minute, boolean is24HourView) {
+        TimePickerDialog dialog = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        //
+                        int gio = i;
+                        int phut = i1;
+                        ed_date.setText("Thời gian đã chọn: " + gio + ":" + phut);
+
+                    }
+                },
+                calendar.get(Calendar.HOUR),
+                calendar.get(Calendar.MINUTE),
+                true // nếu là True:  Hiển thị dạng 24h, nếu là false: hiển thị dạng 12h.
+                );
+        dialog.show();
+    }
+
+
 
     void showPickerDialog(){
         // tạo đối tượng Lịch để cài đặt thời gian.
